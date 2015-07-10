@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // 加载路由控制
-var routes = require('./routes/index');
+var routes = require('./routes/login');
 var users = require('./routes/users');
 
 // 创建项目实例
@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 // 定义静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'bower_components')));
 // 匹配路径和路由
 app.use('/', routes);
 app.use('/users', users);
@@ -43,7 +43,6 @@ app.use(function (req, res, next) {
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 // 开发环境，500错误处理和错误堆栈跟踪
