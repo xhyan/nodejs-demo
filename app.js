@@ -1,22 +1,41 @@
 // 加载依赖库，原来这个类库都封装在connect中，现在需地注单独加载
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// 加载路由控制
-var routes = require('./routes/login');
-var users = require('./routes/users');
-
 // 创建项目实例
 var app = express();
+//加载配置
+var settings = require('./setting');
+var flash = require('connect-flash');
+//连接到数据库
+var MongoStore = require('connect-mongo')(session);
+//设置session
+app.use(session({
+    secret: settings.cookieSecret,
+    key: settings.db,//cookie name
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},//cookie有效期，30天
+    store: new MongoStore({
+        db: settings.db,
+        host: settings.host,
+        port: settings.port
+    })
+}));
+
+// 加载路由控制
+var login = require('./routes/login');
+//var users = require('./routes/users');
+//var partner = require('./routes/partner');
 
 // view engine setup
 // 定义EJS模板引擎和模板文件位置，也可以使用jade或其他模型引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(flash());
 
 // uncomment after placing your favicon in /public
 // 定义icon图标
@@ -32,15 +51,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'bower_components')));
 // 匹配路径和路由
-app.use('/', routes);
-app.use('/users', users);
-
+app.use('/', login);
+//app.use('/users', users);
+//app.user('/partner', partner);
 // 404错误处理
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
+
 
 // error handlers
 // development error handler
