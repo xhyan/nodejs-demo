@@ -21,7 +21,7 @@ User.prototype.save = function (callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
-            return callback(err);//返回错误信息
+            return callback(err); //返回错误信息
         }
         //读取users集合
         db.collection('users', function (err, collection) {
@@ -35,9 +35,9 @@ User.prototype.save = function (callback) {
             }, function (err, user) {
                 mongodb.close();
                 if (err) {
-                    return callback(err);//错误，返回err信息
+                    return callback(err); //错误，返回err信息
                 }
-                callback(null, user.ops[0]);//成功，不返回错误信息，返回用户信息
+                callback(null, user.ops[0]); //成功，不返回错误信息，返回用户信息
             });
         });
     });
@@ -54,7 +54,7 @@ User.get = function (username, callback) {
         db.collection('users', function (err, collection) {
             if (err) {
                 mongodb.close();
-                return callback(err);//error, return err info
+                return callback(err); //error, return err info
             }
 
             //query user by username
@@ -63,9 +63,9 @@ User.get = function (username, callback) {
             }, function (err, user) {
                 mongodb.close();
                 if (err) {
-                    return callback(err);//failure, return err info
+                    return callback(err); //failure, return err info
                 }
-                callback(null, user);//success, return user info
+                callback(null, user); //success, return user info
             });
         });
     });

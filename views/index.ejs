@@ -1,7 +1,11 @@
 <% include layout/header.ejs %>
-
-<h1>Welcome to <%= title %></h1>
-<p><a href="/login">登陆</a></p>
+<% posts.forEach(function (post, index) { %>
+<p><h2><a href="#"><%= post.title %></a></h2></p>
+<p class="info">
+  作者：<a href="#"><%= post.name %></a> |
+  日期：<%= post.time.minute %>
+</p>
+<p><%- post.post %></p>
+<% }) %>
 
 <% include layout/footer.ejs %>
-

@@ -16,6 +16,8 @@ var flash = require('connect-flash');
 var MongoStore = require('connect-mongo')(session);
 //设置session
 app.use(session({
+    resave: true,
+    saveUninitialized: true,
     secret: settings.cookieSecret,
     key: settings.db,//cookie name
     cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},//cookie有效期，30天
